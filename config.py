@@ -1,5 +1,0 @@
-BOT_TOKEN = "1668060502:AAHzRN_mpLapGS-QPN65QfcHe4zIoR3vngY"
-my_id = "365950179"
-
-NOTION_TOKEN = "bcc2dd77c95d86c2fc5067559d1159f06df41f3b1834ff2e8615c8e61e0fade3d4b1d5e833265fe5bd9b85a32bbc643885f1b54f182fa1f786f016dbebe7bae47a29abb7db8532ca451f01c7ddb3"
-notion_test_page = "https://www.notion.so/test-page-a6a01476b39241289f5af5d9ec21bbdc"
