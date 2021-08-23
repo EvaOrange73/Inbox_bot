@@ -1,5 +1,5 @@
 class Context:
-    def __init__(self, text, id, is_planned, time="", start="", end="", all_tasks=None, habits=None):
+    def __init__(self, text, id, is_planned, start="", end="", all_tasks=None, habits=None):
         self.is_planned = is_planned
         if habits is None:
             habits = []
@@ -7,7 +7,6 @@ class Context:
             all_tasks = []
         self.text = text
         self.id = id
-        self.time = time
         self.start = start
         self.end = end
         self.all_tasks = all_tasks

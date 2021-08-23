@@ -46,16 +46,13 @@ async def ask_for_tomorrow_contexts(message: types.Message, state: FSMContext):
 
     await message.answer(get_social_tasks(all_tasks.list_of_social_tasks))
     contexts = read_contexts(all_tasks)
-    if contexts is None:
-        await message.answer("план на сегодня не получился, так как не все контексты запланированы /new_context")
-        await state.finish()
-    else:
-        list_for_kb = make_list_for_keyboard(contexts)
-        await message.answer("На сегодня запланированы следующие контексты:",
-                             reply_markup=create_list_keyboard(list_for_kb))
 
-        await TodayStates.waiting_for_context.set()
-        await state.update_data(contexts=contexts)
+    list_for_kb = make_list_for_keyboard(contexts)
+    await message.answer("На сегодня запланированы следующие контексты:",
+                         reply_markup=create_list_keyboard(list_for_kb))
+
+    await TodayStates.waiting_for_context.set()
+    await state.update_data(contexts=contexts)
 
 
 @dp.callback_query_handler(list_callback.filter(), state=TodayStates.waiting_for_context)

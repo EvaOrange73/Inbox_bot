@@ -35,7 +35,6 @@ class ContextColumns(Column, Enum):
     DELETE = ("Неактуально", "checkbox")
     CONDITIONS = ("Условия", "rich_text")
     RESULT = ("Результат", "rich_text")
-    TIME = ("Время", "select")
     DESCRIPTION = ("Описание", "checkbox")
     TASKS = ("Задачи", "relation")
     PROJECTS = ("Проекты", "relation")

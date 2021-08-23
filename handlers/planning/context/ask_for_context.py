@@ -8,8 +8,8 @@ from keyboards.default_keyboard import default_keyboard
 from keyboards.inline.yes_or_no_keyboard import create_yes_or_no_keyboard
 from main import dp
 from notion_scripts.requests.add_page import add_page
-from notion_scripts.requests.update_page import update_page
 from notion_scripts.requests.read_contexts import read_contexts
+from notion_scripts.requests.update_page import update_page
 from utils.columns import InboxColumns, ContextColumns
 from utils.config import context_table_id
 

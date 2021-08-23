@@ -6,8 +6,8 @@ from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
 from main import dp
-from notion_scripts.requests.add_page import add_page
 from notion_scripts.form_json.ecuals_filter import equals_filter
+from notion_scripts.requests.add_page import add_page
 from notion_scripts.requests.read_tasks import read_tasks
 from utils.columns import DiaryColumns, InboxColumns
 from utils.config import diary_table_id

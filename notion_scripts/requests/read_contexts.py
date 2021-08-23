@@ -17,7 +17,5 @@ def read_contexts(all_tasks, list_of_ids=False, filter_data=""):
                 continue
         context = make_context(data["results"][i], all_tasks)
         contexts.append(context)
-        if not context.is_planned:
-            return None
 
     return contexts

@@ -24,7 +24,6 @@ def make_context(data, all_tasks):
         return Context(
             text=parse_column(data, ContextColumns.NAME),
             id=context_id,
-            time=parse_column(data, ContextColumns.TIME),
             start=parse_column(data, ContextColumns.CONDITIONS),
             end=parse_column(data, ContextColumns.RESULT),
             all_tasks=tasks,
