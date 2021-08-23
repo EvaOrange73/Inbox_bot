@@ -45,11 +45,13 @@ async def add_pearson_to_social_task(message: types.Message, state: FSMContext):
 @dp.message_handler(state=SocialTaskStates.waiting_for_time)
 async def add_time_to_social_task(message: Message, state: FSMContext):
     date = parse_date(message.text)
+    if date is not None:
+        await end(state, date)
 
-    await end(state, date)
-
-    await message.answer(f"задача запланирована")
-    await state.finish()
+        await message.answer(f"задача запланирована")
+        await state.finish()
+    else:
+        await message.answer("Не получилось распознать дату, попробуй снова")
 
 
 async def end(state: FSMContext, date=UpdateDate("", InboxColumns.DATE)):

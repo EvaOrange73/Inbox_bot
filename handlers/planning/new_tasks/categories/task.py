@@ -25,7 +25,10 @@ async def task(call: types.CallbackQuery, state: FSMContext):
 @dp.message_handler(state=TaskStates.waiting_for_date)
 async def process_day(message: types.Message, state: FSMContext):
     date = parse_date(message.text)
-    data = await state.get_data()
-    task_id = data.get("task_id")
-    update_page(task_id, {date.column: date.date})
-    await ask_for_context(message, state)
+    if date is not None:
+        data = await state.get_data()
+        task_id = data.get("task_id")
+        update_page(task_id, {date.column: date.date})
+        await ask_for_context(message, state)
+    else:
+        await message.answer("Не получилось распознать дату, попробуй снова")

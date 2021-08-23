@@ -18,9 +18,10 @@ class InboxColumns(Column, Enum):
     PLANNED = ("Запланировано", "checkbox")
     DESCRIPTION = ("Описание", "rich_text")
     NEXT_STEP = ("Следующий шаг", "select")
-    WHEN = ("Когда?", "select")
     HABIT_START = ("Начало привычки", "date")
+    HABIT_SPECIAL_START = ("Примерное начало", "relation")
     HABIT_END = ("Конец привычки", "date")
+    HABIT_SPECIAL_END = ("Примерный конец", "relation")
     PARENT = ('Родитель', "relation")
     CHILD = ('Ребёнок', "relation")
     CONTEXT_TASKS = ("Контекст (для задач)", "relation")
@@ -28,6 +29,7 @@ class InboxColumns(Column, Enum):
     CONTEXT_SOCIALS = ("Контекст (требуют общения)", "relation")
     CONTEXT_HABITS = ("Контекст (для привычкек)", "relation")
     DATE = ("Дата", "date")
+    SPECIAL_DATE = ("Примерная дата", "relation")
 
 
 class ContextColumns(Column, Enum):

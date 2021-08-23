@@ -6,11 +6,11 @@ from utils.columns import InboxColumns
 
 dates_for_keyboard = []
 
-key_words = {"сегодня": UpdateDate(datetime.now().date().isoformat(), InboxColumns.DATE),
-             "завтра": UpdateDate((datetime.now().date() + timedelta(days=1)).isoformat(), InboxColumns.DATE),
-             "на этой неделе": UpdateDate("на этой неделе", InboxColumns.WHEN),
-             "потом": UpdateDate("потом", InboxColumns.WHEN)
-             }
+key_words = {
+    "сегодня": UpdateDate(datetime.now().date().isoformat(), InboxColumns.DATE),
+    "завтра": UpdateDate((datetime.now().date() + timedelta(days=1)).isoformat(), InboxColumns.DATE),
+    "послезавтра": UpdateDate((datetime.now().date() + timedelta(days=2)).isoformat(), InboxColumns.DATE)
+}
 for key_word in key_words.keys():
     dates_for_keyboard.append(key_word)
 

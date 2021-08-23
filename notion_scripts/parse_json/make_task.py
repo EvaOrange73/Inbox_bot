@@ -33,11 +33,10 @@ def make_task(data):
         )
     else:
         task_type = "task"
-        print(data)
         if data.get(InboxColumns.DATE.title) is not None:
             date = parse_column(data, InboxColumns.DATE)
         else:
-            date = parse_column(data, InboxColumns.WHEN)
+            date = parse_column(data, InboxColumns.SPECIAL_DATE)
         return Task(
             text=parse_column(data, InboxColumns.NAME),
             id=task_id,

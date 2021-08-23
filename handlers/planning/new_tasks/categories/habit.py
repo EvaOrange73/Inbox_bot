@@ -26,26 +26,39 @@ async def habit(call: types.CallbackQuery, state: FSMContext):
 @dp.message_handler(state=HabitStates.waiting_for_start)
 async def process_start(message: types.Message, state: FSMContext):
     start = parse_date(message.text)
+    if start is not None:
+        await state.update_data(start=start)
 
-    await state.update_data(start=start.default_order)
-
-    await message.answer("Как ты думаешь, когда привычка перестанет быть актуальной?",
-                         reply_markup=default_keyboard(dates_for_keyboard))
-    await HabitStates.waiting_for_end.set()
+        await message.answer("Как ты думаешь, когда привычка перестанет быть актуальной?",
+                             reply_markup=default_keyboard(dates_for_keyboard))
+        await HabitStates.waiting_for_end.set()
+    else:
+        await message.answer("Не получилось распознать дату, попробуй снова")
 
 
 @dp.message_handler(state=HabitStates.waiting_for_end)
 async def process_end(message: types.Message, state: FSMContext):
-    data = await state.get_data()
-    task_id = data.get("task_id")
-    start = data.get("start")
-    end = parse_date(message.text).default_order
+    end = parse_date(message.text)
+    if end is not None:
+        data = await state.get_data()
+        if end.column == InboxColumns.DATE:
+            end_column = InboxColumns.HABIT_END
+        else:
+            end_column = InboxColumns.HABIT_SPECIAL_END
+        start = data.get("start")
+        if start.column == InboxColumns.DATE:
+            start_column = InboxColumns.HABIT_START
+        else:
+            start_column = InboxColumns.HABIT_SPECIAL_START
 
-    update_page(task_id, {
-        InboxColumns.HABIT: True,
-        InboxColumns.HABIT_START: start,  # однажды тут всё сломается, потому что функция может вернуть строчку "потом"
-        InboxColumns.HABIT_END: end,
-        InboxColumns.PLANNED: True
-    })
+        update_page(data.get("task_id"),
+                    {
+                        InboxColumns.HABIT: True,
+                        start_column: start.date,
+                        end_column: end.date,
+                        InboxColumns.PLANNED: True
+                    })
 
-    await ask_for_context(message, state)
+        await ask_for_context(message, state)
+    else:
+        await message.answer("Не получилось распознать дату, попробуй снова")

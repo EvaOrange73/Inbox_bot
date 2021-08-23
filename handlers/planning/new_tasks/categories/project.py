@@ -76,15 +76,17 @@ async def process_same_date(call: types.CallbackQuery, callback_data: dict, stat
 @dp.message_handler(state=ProjectStates.waiting_for_date)
 async def process_date(message: Message, state: FSMContext):
     date = parse_date(message.text)
+    if date is not None:
+        data = await state.get_data()
+        list_of_tasks = data.get("list_of_tasks")
+        project_id = data.get("task_id")
 
-    data = await state.get_data()
-    list_of_tasks = data.get("list_of_tasks")
-    project_id = data.get("task_id")
-
-    update_page(project_id, {date.column: date.date})
-    for task in list_of_tasks:
-        update_page(task.id, {date.column: date.date})  # TODO миллион лишних запросов
-    await ask_about_same_context(message)
+        update_page(project_id, {date.column: date.date})
+        for task in list_of_tasks:
+            update_page(task.id, {date.column: date.date})  # TODO миллион лишних запросов
+        await ask_about_same_context(message)
+    else:
+        await message.answer("Не получилось распознать дату, попробуй снова")
 
 
 async def ask_about_same_context(message: Message):
