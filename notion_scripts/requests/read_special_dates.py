@@ -15,5 +15,5 @@ def read_special_dates():
     dates = {}
     for i in range(len(data["results"])):
         dates[parse_column(data["results"][i]["properties"], DateColumns.NAME)] = \
-            UpdateDate(parse_column(data["results"][i]["properties"], DateColumns.DATE), InboxColumns.DATE)
+            UpdateDate(data["results"][i]["id"], InboxColumns.SPECIAL_DATE)
     return dates

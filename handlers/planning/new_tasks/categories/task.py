@@ -6,7 +6,7 @@ from handlers.planning.context.ask_for_context import ask_for_context
 from keyboards.default_keyboard import default_keyboard
 from main import dp
 from notion_scripts.requests.update_page import update_page
-from utils.dates.dates import dates_for_keyboard
+from utils.dates.dates import get_dates_for_keyboard
 from utils.dates.parse_date import parse_date
 
 
@@ -18,7 +18,7 @@ class TaskStates(StatesGroup):
 
 
 async def task(call: types.CallbackQuery, state: FSMContext):
-    await call.message.answer("Когда ты будешь это делать?", reply_markup=default_keyboard(dates_for_keyboard))
+    await call.message.answer("Когда ты будешь это делать?", reply_markup=default_keyboard(get_dates_for_keyboard()))
     await TaskStates.waiting_for_date.set()
 
 

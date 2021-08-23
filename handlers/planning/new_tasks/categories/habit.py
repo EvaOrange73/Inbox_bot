@@ -7,7 +7,7 @@ from keyboards.default_keyboard import default_keyboard
 from main import dp
 from notion_scripts.requests.update_page import update_page
 from utils.columns import InboxColumns
-from utils.dates.dates import dates_for_keyboard
+from utils.dates.dates import get_dates_for_keyboard
 from utils.dates.parse_date import parse_date
 
 
@@ -19,7 +19,7 @@ class HabitStates(StatesGroup):
 
 async def habit(call: types.CallbackQuery, state: FSMContext):
     await call.message.answer("Когда ты хочешь сделать это первый раз?",
-                              reply_markup=default_keyboard(dates_for_keyboard))
+                              reply_markup=default_keyboard(get_dates_for_keyboard()))
     await HabitStates.waiting_for_start.set()
 
 
@@ -30,7 +30,7 @@ async def process_start(message: types.Message, state: FSMContext):
         await state.update_data(start=start)
 
         await message.answer("Как ты думаешь, когда привычка перестанет быть актуальной?",
-                             reply_markup=default_keyboard(dates_for_keyboard))
+                             reply_markup=default_keyboard(get_dates_for_keyboard()))
         await HabitStates.waiting_for_end.set()
     else:
         await message.answer("Не получилось распознать дату, попробуй снова")

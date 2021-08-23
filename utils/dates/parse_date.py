@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 # months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь",
 # "Декабрь"]
 from dto.update_date import UpdateDate
+from notion_scripts.requests.read_special_dates import read_special_dates
 from utils.columns import InboxColumns
 # Поддерживаемые форматы даты:
 # сегодня, завтра
@@ -11,11 +12,12 @@ from utils.columns import InboxColumns
 # в понедельник
 # 5 вгуста
 # 2.03.2021
-from utils.dates.dates import key_words, special_dates
+from utils.dates.dates import key_words
 
 months_short = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
 weekdays_short = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
 weekdays_long = ["по", "вт", "ср", "че", "пя", "су", "во"]
+special_dates = read_special_dates()
 
 
 def parse_date(text):

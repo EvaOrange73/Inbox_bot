@@ -53,3 +53,4 @@ class DiaryColumns(Column, Enum):
 class DateColumns(Column, Enum):
     NAME = ("Name", "title")
     DATE = ("Дата", "date")
+    IS_EXACT = ("Точно", "checkbox")

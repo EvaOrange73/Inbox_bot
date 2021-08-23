@@ -8,7 +8,7 @@ from keyboards.default_keyboard import default_keyboard
 from main import dp
 from notion_scripts.requests.update_page import update_page
 from utils.columns import InboxColumns
-from utils.dates.dates import dates_for_keyboard
+from utils.dates.dates import get_dates_for_keyboard
 from utils.dates.parse_date import parse_date
 
 
@@ -34,7 +34,7 @@ async def add_text_to_social_task(message: types.Message, state: FSMContext):
 async def add_pearson_to_social_task(message: types.Message, state: FSMContext):
     await state.update_data(next_step=message.text)
     if message.text == "я":
-        await message.answer("Когда ты будешь это делать?", reply_markup=default_keyboard(dates_for_keyboard))
+        await message.answer("Когда ты будешь это делать?", reply_markup=default_keyboard(get_dates_for_keyboard()))
         await SocialTaskStates.waiting_for_time.set()
     else:
         await message.answer("задача добавлена в waiting list", reply_markup=types.ReplyKeyboardRemove())

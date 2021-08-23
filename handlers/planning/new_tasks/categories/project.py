@@ -12,7 +12,7 @@ from notion_scripts.requests.add_page import add_page
 from notion_scripts.requests.update_page import update_page
 from utils.columns import InboxColumns
 from utils.config import inbox_table_id
-from utils.dates.dates import dates_for_keyboard
+from utils.dates.dates import get_dates_for_keyboard
 from utils.dates.parse_date import parse_date
 from utils.properties import InboxProperties
 
@@ -66,7 +66,7 @@ async def process_task(message: Message, state: FSMContext):
 async def process_same_date(call: types.CallbackQuery, callback_data: dict, state: FSMContext):
     if callback_data.get("answer") == "yes":
         await state.update_data(date=1)
-        await call.message.answer("Когда ты выполнишь проект?", reply_markup=default_keyboard(dates_for_keyboard))
+        await call.message.answer("Когда ты выполнишь проект?", reply_markup=default_keyboard(get_dates_for_keyboard()))
         await ProjectStates.waiting_for_date.set()
     else:
         await state.update_data(date=0)
