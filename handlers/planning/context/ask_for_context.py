@@ -56,6 +56,8 @@ async def process_context(message: types.Message, state: FSMContext):
         data = await state.get_data()
         list_of_tasks = data.get("list_of_tasks")
 
+        project_id = data.get("task_id")
+        update_page(project_id, {InboxColumns.CONTEXT_PROJECTS: context.id})
         for task in list_of_tasks:
             update_page(task.id, {InboxColumns.CONTEXT_TASKS: context.id})  # TODO миллион лишних запросов
 
@@ -78,7 +80,8 @@ async def end(message: Message, state: FSMContext):
     list_of_tasks = data.get("list_of_tasks")
     date = data.get("date")
     context = data.get("context")
-
+    project_id = data.get("task_id")
+    update_page(project_id, {InboxColumns.PLANNED: True})
     if date:
         if context:
             await message.answer("Проект и подзадачи запланированы")
