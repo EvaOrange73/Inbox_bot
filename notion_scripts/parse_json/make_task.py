@@ -44,5 +44,6 @@ def make_task(data):
             id=task_id,
             type=task_type,
             date=date,
-            context_id=parse_column(data, InboxColumns.CONTEXT_TASKS)
+            context_id=parse_column(data, InboxColumns.CONTEXT_TASKS),
+            parent_id=parse_column(data, InboxColumns.PARENT)
         )

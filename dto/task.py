@@ -20,7 +20,7 @@ class Task:
         self.date = date
         self.parent_id = parent_id
         if parent_id:
-            self.parent_name = read_line(parent_id)  # TODO лишний запрос
+            self.parent_name = read_line(parent_id[0])  # TODO лишний запрос
         else:
             self.parent_name = ""
         self.context_id = context_id
@@ -29,4 +29,3 @@ class Task:
         else:
             self.context_name = ""
         self.children = children
-
