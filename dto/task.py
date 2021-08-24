@@ -13,7 +13,7 @@ def read_line(page_id):
 
 
 class Task:
-    def __init__(self, text, id, type, date="", parent_id="", ):
+    def __init__(self, text, id, type, date="", parent_id="", context_id="", children=""):
         self.type = type
         self.text = text
         self.id = id
@@ -23,3 +23,10 @@ class Task:
             self.parent_name = read_line(parent_id)  # TODO лишний запрос
         else:
             self.parent_name = ""
+        self.context_id = context_id
+        if context_id:
+            self.context_name = read_line(context_id[0])  # TODO лишний запрос
+        else:
+            self.context_name = ""
+        self.children = children
+

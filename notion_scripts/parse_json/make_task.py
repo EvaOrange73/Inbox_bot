@@ -12,7 +12,8 @@ def make_task(data):
         return Task(
             text=parse_column(data, InboxColumns.NAME),
             id=task_id,
-            type=task_type
+            type=task_type,
+            context_id=parse_column(data, InboxColumns.CONTEXT_HABITS)
         )
     elif parse_column(data, InboxColumns.PROJECT):
         task_type = "project"
@@ -20,7 +21,8 @@ def make_task(data):
         return Task(
             text=parse_column(data, InboxColumns.NAME),
             id=task_id,
-            type=task_type
+            type=task_type,
+            children=list_of_children_id
         )
     elif parse_column(data, InboxColumns.SOCIAL):
         task_type = "social_task"
@@ -41,5 +43,6 @@ def make_task(data):
             text=parse_column(data, InboxColumns.NAME),
             id=task_id,
             type=task_type,
-            date=date
+            date=date,
+            context_id=parse_column(data, InboxColumns.CONTEXT_TASKS)
         )

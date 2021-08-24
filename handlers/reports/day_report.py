@@ -19,19 +19,56 @@ class DayReportStates(StatesGroup):
 
 @dp.message_handler(Command("day_report"))
 async def day_report(message: types.Message, state: FSMContext):
-    tasks = read_tasks(filter_data=equals_filter({
+    all_tasks = read_tasks(filter_data=equals_filter({
         InboxColumns.DELETE: False,
         InboxColumns.DONE: False,
         InboxColumns.DATE: datetime.now().date().isoformat()
-    })).list_of_tasks
+    }))
+    worst_context = {}
+    tasks = all_tasks.list_of_tasks
     if len(tasks):
-        answer = "Сегодня не были сделаны следующие задачи:"
+        answer = "Сегодня не были сделаны задачи:"
         for task in tasks:
-            answer += f"\n{task.text}"
-        answer += "\nНапиши пару слов о том, почему не получилось сделать запланированное"
+            answer += f"\n{task.text}({task.context_name})"
+            context = worst_context.get(task.context_name)
+            if context is None:
+                context = 0
+            worst_context[task.context_name] = context + 1
     else:
-        answer = "Сегодня были сделаны все запланированные задачи!\n" \
-                 "Напиши пару слов о том, как это удалось;)"
+        answer = "Сегодня были сделаны все запланированные задачи!"
+
+    habits = all_tasks.list_of_habits
+    if len(habits):
+        answer += "\n\nНе были выполнены привычки:"
+        for habit in habits:
+            answer += f"\n{habit.text}({habit.context_name})"
+            context = worst_context.get(habit.context_name)
+            if context is None:
+                context = 0
+            worst_context[habit.context_name] = context + 1
+    else:
+        answer += "\n\nБыли выполнены все привычки!"
+
+    projects = all_tasks.list_of_projects
+    if len(projects):
+        answer += "\n\nСейчас в процессе находятся проекты:"
+        for project in projects:
+            answer += f"\n{project.text}(осталось задач: {len(project.children)})"
+    else:
+        answer += "\n\nНет актуальных проектов"
+
+    socials = all_tasks.list_of_social_tasks
+    if len(socials):
+        answer += "\n\nВ процессе находятся следующие взаимодействия:"
+        for social in socials:
+            answer += f"{social.text}"
+    else:
+        answer += "\n\nНет текущих социальных взаимодействий"
+
+    answer += "\n\nНапиши небольшое сообщение о своей продуктивности сегодня. Почему результаты этого дня именно такие?"
+
+    worst_context = sorted(worst_context.items(), key=lambda item: item[1], reverse=True)[0]
+    answer += f"\n\nСамый непродуктивный контекст сегодня -- {worst_context[0]}"
 
     await message.answer(answer)
     await DayReportStates.waiting_for_answer.set()
