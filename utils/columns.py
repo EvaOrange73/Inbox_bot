@@ -69,3 +69,11 @@ class DateColumns(Column, Enum):
     NAME = ("Name", "title")
     DATE = ("Дата", "date")
     IS_EXACT = ("Точно", "checkbox")
+
+
+class ReflectionColumns(Column, Enum):
+    NAME = ("Name", "title")
+    DATE = ("Дата", "date")
+    TYPE = ("Тип", "select")
+    PRODUCTIVITY = ("Продуктивность", "rich_text")
+    HANGOUTS = ("Тусовки", "rich_text")

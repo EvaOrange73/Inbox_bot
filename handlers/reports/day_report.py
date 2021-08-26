@@ -5,16 +5,19 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
+from keyboards.default_keyboard import default_keyboard
 from main import dp
 from notion_scripts.form_json.ecuals_filter import equals_filter
 from notion_scripts.requests.add_page import add_page
 from notion_scripts.requests.read_tasks import read_tasks
-from utils.columns import DiaryColumns, InboxColumns
-from utils.config import diary_table_id
+from utils.columns import ReflectionColumns, InboxColumns
+from utils.config import reflection_table_id
+from utils.properties import ReflectionProperties, weekday
 
 
 class DayReportStates(StatesGroup):
-    waiting_for_answer = State()
+    waiting_for_name = State()
+    waiting_for_productivity = State()
 
 
 @dp.message_handler(Command("day_report"))
@@ -65,26 +68,43 @@ async def day_report(message: types.Message, state: FSMContext):
     else:
         answer += "\n\nНет текущих социальных взаимодействий"
 
-    answer += "\n\nНапиши небольшое сообщение о своей продуктивности сегодня. Почему результаты этого дня именно такие?"
+    answer += "\n\nДай название сегодняшнему дню!"
 
-    worst_context = sorted(worst_context.items(), key=lambda item: item[1], reverse=True)[0]
-    answer += f"\n\nСамый непродуктивный контекст сегодня -- {worst_context[0]}"
+    if worst_context:
+        worst_context = sorted(worst_context.items(), key=lambda item: item[1], reverse=True)[0]
+        await state.update_data(worst_context=worst_context[0])
+        answer += f"\n\nСамый непродуктивный контекст сегодня -- {worst_context[0]}"
+
+    await message.answer(answer, reply_markup=default_keyboard([weekday[datetime.now().weekday()]]))
+    await DayReportStates.waiting_for_name.set()
+
+
+@dp.message_handler(state=DayReportStates.waiting_for_name)
+async def process_name(message: types.Message, state: FSMContext):
+    await state.update_data(name=message.text)
+
+    answer = "Напиши небольшое сообщение о своей продуктивности сегодня"
+
+    data = await state.get_data()
+    worst_context = data.get("worst_context")
+    if worst_context is not None:
+        answer += f"\nСамый непродуктивный контекст -- {worst_context}"
+    answer += "\n\nПочему результаты этого дня именно такие?"
 
     await message.answer(answer)
-    await DayReportStates.waiting_for_answer.set()
+    await DayReportStates.waiting_for_productivity.set()
 
 
-@dp.message_handler(state=DayReportStates.waiting_for_answer)
+@dp.message_handler(state=DayReportStates.waiting_for_productivity)
 async def process_answer(message: types.Message, state: FSMContext):
-    answer = message.text
+    data = await state.get_data()
 
-    add_page(diary_table_id, {
-        DiaryColumns.NAME: "Рефлексия",
-        DiaryColumns.DATE: datetime.now().date().isoformat()
-    },
-             children=answer
-             )
+    add_page(reflection_table_id, {
+        ReflectionColumns.NAME: data.get("name"),
+        ReflectionColumns.TYPE: ReflectionProperties.DAY.value,
+        ReflectionColumns.DATE: datetime.now().date().isoformat(),
+        ReflectionColumns.PRODUCTIVITY: message.text
+    })
 
     await message.answer("спасибо)")
-
     await state.finish()

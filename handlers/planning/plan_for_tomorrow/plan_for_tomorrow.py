@@ -19,7 +19,7 @@ from notion_scripts.requests.read_contexts import read_contexts
 from notion_scripts.requests.read_tasks import read_tasks
 from utils.columns import DiaryColumns, InboxColumns
 from utils.config import diary_table_id
-from utils.properties import InboxProperties
+from utils.properties import InboxProperties, weekday
 
 
 class PlanStateOrder(StatesGroup):
@@ -86,7 +86,6 @@ async def process_order(call: types.CallbackQuery, callback_data: dict, state: F
                                          reply_markup=create_list_keyboard(make_list_for_keyboard(day_context), True))
         else:
             await call.message.edit_text(f"{answer}\nЗаписываю в ежедневник...")
-            weekday = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
             date = datetime.now().date() + timedelta(days=1)
             add_page(diary_table_id,
                      {
