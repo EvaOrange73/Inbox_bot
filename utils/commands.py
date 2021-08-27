@@ -9,7 +9,7 @@ async def set_commands(dp):
         types.BotCommand(command="/plan_for_tomorrow", description="запланировать завтрашний день"),
         types.BotCommand(command="/all_tasks", description="посмотреть все актуальные задачи"),
         types.BotCommand(command="/get_today_plan", description="план на сегодня"),
-        types.BotCommand(command="/day_report", description="дневной отчёт"),
+        types.BotCommand(command="/day_reflection", description="дневной отчёт"),
         types.BotCommand(command="/special_dates", description="примерные даты"),
     ]
     await dp.bot.set_my_commands(commands)

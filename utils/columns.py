@@ -77,3 +77,6 @@ class ReflectionColumns(Column, Enum):
     TYPE = ("Тип", "select")
     PRODUCTIVITY = ("Продуктивность", "rich_text")
     HANGOUTS = ("Тусовки", "rich_text")
+    IS_PROCESSED = ("Обработано", "checkbox")
+    PARENT = ('Родитель', "relation")
+    CHILD = ('Ребёнок', "relation")

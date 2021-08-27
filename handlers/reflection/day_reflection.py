@@ -5,10 +5,14 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
+from dto.item import Item
+from handlers.reflection.small_period_reflection import small_period_reflection
 from keyboards.default_keyboard import default_keyboard
+from keyboards.inline.list_keyboard import create_list_keyboard, list_callback
 from main import dp
-from notion_scripts.form_json.ecuals_filter import equals_filter
+from notion_scripts.form_json.equals_filter import equals_filter
 from notion_scripts.requests.add_page import add_page
+from notion_scripts.requests.read_reflections import read_reflections
 from notion_scripts.requests.read_tasks import read_tasks
 from utils.columns import ReflectionColumns, InboxColumns
 from utils.config import reflection_table_id
@@ -18,9 +22,10 @@ from utils.properties import ReflectionProperties, weekday
 class DayReportStates(StatesGroup):
     waiting_for_name = State()
     waiting_for_productivity = State()
+    if_small_reflection = State()
 
 
-@dp.message_handler(Command("day_report"))
+@dp.message_handler(Command("day_reflection"))
 async def day_report(message: types.Message, state: FSMContext):
     all_tasks = read_tasks(filter_data=equals_filter({
         InboxColumns.DELETE: False,
@@ -106,5 +111,25 @@ async def process_answer(message: types.Message, state: FSMContext):
         ReflectionColumns.PRODUCTIVITY: message.text
     })
 
-    await message.answer("спасибо)")
-    await state.finish()
+    new_reflections = read_reflections(filter_data=equals_filter({
+        ReflectionColumns.IS_PROCESSED: False,
+        ReflectionColumns.TYPE: ReflectionProperties.DAY.value
+    }))
+    if len(new_reflections) > 4:
+        await state.update_data(new_reflections=new_reflections)
+        await message.answer(f"Есть ли у тебя настроение более глубоко погрузиться в рефлексию?\n"
+                             f"Не обработано {len(new_reflections)} дней",
+                             reply_markup=create_list_keyboard([Item("да", "yes"), Item("нет", "no")]))
+        await DayReportStates.if_small_reflection.set()
+    else:
+        await message.answer("спасибо за мысли об этом дне!")
+        await state.finish()
+
+
+@dp.callback_query_handler(list_callback.filter(), state=DayReportStates.if_small_reflection)
+async def process_if_small_reflection(call: types.CallbackQuery, state: FSMContext, callback_data: dict):
+    await call.message.edit_text("спасибо за мысли об этом дне!")
+    if callback_data.get("item_id") == "no":
+        await state.finish()
+    else:
+        await small_period_reflection(call.message, state)
