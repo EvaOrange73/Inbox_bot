@@ -28,5 +28,3 @@ def get_only_special_dates_for_keyboard():
     for date in special_dates.keys():
         only_special_dates_for_keyboard.append(Item(date, special_dates[date].date))
     return only_special_dates_for_keyboard
-
-

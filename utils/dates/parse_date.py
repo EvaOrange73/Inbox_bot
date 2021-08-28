@@ -30,31 +30,31 @@ def parse_date(text):
             if text.find(".") != -1:
                 date = datetime.strptime(text, "%d.%m.%Y").date()
                 return UpdateDate(date, InboxColumns.DATE)
+
+            date_list = list(text.split(" "))
+            day = int(date_list[0])
+
+            month = months_short.index(date_list[1][:3].lower()) + 1
+
+            if len(date_list) == 3:
+                year = int(date_list[2])
             else:
-                date_list = list(text.split(" "))
-                day = int(date_list[0])
+                year = datetime.now().year
+                if datetime.now().month > month:
+                    year += 1
 
-                month = months_short.index(date_list[1][:3].lower()) + 1
+            return UpdateDate(datetime(year, month, day).date().isoformat(), InboxColumns.DATE)
 
-                if len(date_list) == 3:
-                    year = int(date_list[2])
-                else:
-                    year = datetime.now().year
-                    if datetime.now().month > month:
-                        year += 1
+        weekday = list(text.split(" "))[-1]
+        try:
+            weekday = weekdays_short.index(weekday[:2])
+        except ValueError:
+            weekday = weekdays_long.index(weekday[:2])
 
-                return UpdateDate(datetime(year, month, day).date().isoformat(), InboxColumns.DATE)
-        else:
-            weekday = list(text.split(" "))[-1]
-            try:
-                weekday = weekdays_short.index(weekday[:2])
-            except ValueError:
-                weekday = weekdays_long.index(weekday[:2])
+        date = datetime.now().date() + timedelta(days=1)
+        while date.weekday() != weekday:
+            date += timedelta(days=1)
 
-            date = datetime.now().date() + timedelta(days=1)
-            while date.weekday() != weekday:
-                date += timedelta(days=1)
-
-            return UpdateDate(date.isoformat(), InboxColumns.DATE)
-    except:
+        return UpdateDate(date.isoformat(), InboxColumns.DATE)
+    except ValueError:
         return None

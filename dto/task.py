@@ -13,10 +13,12 @@ def read_line(page_id):
 
 
 class Task:
-    def __init__(self, text, id, type, date="", parent_id="", context_id="", children=""):
-        self.type = type
+    def __init__(self, text, task_id, task_type, who, description, date="", parent_id="", context_id="", children=""):
+        self.description = description
+        self.who = who
+        self.type = task_type
         self.text = text
-        self.id = id
+        self.id = task_id
         self.date = date
         self.parent_id = parent_id
         if parent_id:

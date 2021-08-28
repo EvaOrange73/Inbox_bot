@@ -1,4 +1,4 @@
 class Item:
-    def __init__(self, text, id):
+    def __init__(self, text, item_id):
         self.text = text
-        self.id = id
+        self.id = item_id

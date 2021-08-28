@@ -7,10 +7,10 @@ class Tasks:
         list_of_tasks = []
 
         select_list = {
-            "task": all_tasks.list_of_tasks,
-            "habit": all_tasks.list_of_habits,
-            "project": all_tasks.list_of_projects,
-            "social_task": all_tasks.list_of_social_tasks,
+            "task": list_of_tasks,
+            "habit": list_of_habits,
+            "project": list_of_projects,
+            "social_task": list_of_social_tasks,
         }
 
         for task in all_tasks:

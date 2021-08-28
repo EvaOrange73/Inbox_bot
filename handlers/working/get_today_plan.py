@@ -31,7 +31,7 @@ def format_context(context):
 
 
 def make_list_for_keyboard(day_context):
-    return [Item(id=i,
+    return [Item(item_id=i,
                  text=format_context(day_context[i]))
             for i in range(len(day_context)) if day_context[i].get_day_quantity(datetime.now().date()) > 0]
 
@@ -98,7 +98,7 @@ async def process_buttons(call: types.CallbackQuery, callback_data: dict, state:
                 for task in tasks:
                     if task.id == task_id:
                         parent_id = task.parent_id
-                        context_id = task.context_id
+                        context_id = task.id
                         break
                 else:
                     print("get_today_plan -- чето пошло не так...(1)")

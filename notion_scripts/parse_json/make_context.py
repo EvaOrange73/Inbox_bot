@@ -21,16 +21,16 @@ def make_context(data, all_tasks=None):
 
         return Context(
             text=parse_column(data, ContextColumns.NAME),
-            id=parse_column(data, ContextColumns.ID),
+            context_id=parse_column(data, ContextColumns.ID),
             start=parse_column(data, ContextColumns.CONDITIONS),
             end=parse_column(data, ContextColumns.RESULT),
             all_tasks=tasks,
             habits=habits,
             is_planned=True
         )
-    else:
-        return Context(
-            text=parse_column(data, ContextColumns.NAME),
-            id=parse_column(data, ContextColumns.ID),
-            is_planned=False
-        )
+
+    return Context(
+        text=parse_column(data, ContextColumns.NAME),
+        context_id=parse_column(data, ContextColumns.ID),
+        is_planned=False
+    )

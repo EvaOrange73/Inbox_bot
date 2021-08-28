@@ -37,7 +37,7 @@ def form_json(data: Dict[Column, str], parent=None, children=None):
             ]}
 
         elif column.column_type == "relation":
-            if type(text) == list:
+            if isinstance(text, list):
                 new_json["properties"][column.title] = {column.column_type: [{'id': item} for item in text]}
             else:
                 new_json["properties"][column.title] = {column.column_type: [
@@ -49,9 +49,9 @@ def form_json(data: Dict[Column, str], parent=None, children=None):
             new_json["properties"][column.title] = {column.column_type: text}
 
     if children is not None:
-        if type(children) == list:
+        if isinstance(children, list):
             new_json["children"] = children
-        elif type(children) == str:
+        elif isinstance(children, str):
             new_json["children"] = [paragraph(children)]
 
     # print(new_json)

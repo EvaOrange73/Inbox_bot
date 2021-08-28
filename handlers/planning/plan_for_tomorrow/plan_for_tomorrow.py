@@ -32,7 +32,7 @@ def format_context(context):
 
 
 def make_list_for_keyboard(day_context):
-    return [Item(id=i,
+    return [Item(item_id=i,
                  text=format_context(day_context.default_order[i]))
             for i in range(len(day_context.default_order))]
 

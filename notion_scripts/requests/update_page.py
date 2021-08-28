@@ -1,9 +1,9 @@
-from typing import Dict, Union, Any
+from typing import Dict, Any
 
 import requests
 
 from notion_scripts.form_json.form_json import form_json
-from utils.columns import InboxColumns, ContextColumns, Column
+from utils.columns import Column
 from utils.config import headers
 
 

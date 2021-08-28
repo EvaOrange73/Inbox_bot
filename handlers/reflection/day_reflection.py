@@ -99,8 +99,6 @@ async def process_name(message: types.Message, state: FSMContext):
     await message.answer(answer)
     await DayReportStates.waiting_for_productivity.set()
 
-    pass
-
 
 @dp.message_handler(state=DayReportStates.waiting_for_productivity)
 async def process_answer(message: types.Message, state: FSMContext):

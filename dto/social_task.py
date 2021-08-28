@@ -1,6 +1,6 @@
 class SocialTask:
-    def __init__(self, text, id, who, description):
+    def __init__(self, text, task_id, who, description):
         self.text = text
-        self.id = id
+        self.id = task_id
         self.who = who
         self.description = description

@@ -4,11 +4,10 @@ from utils.columns import ReflectionColumns
 
 
 def make_reflection(data):
-
     return Reflection(
-        id=parse_column(data, ReflectionColumns.ID),
+        reflection_id=parse_column(data, ReflectionColumns.ID),
         name=parse_column(data, ReflectionColumns.NAME),
-        type=parse_column(data, ReflectionColumns.TYPE),
+        reflection_type=parse_column(data, ReflectionColumns.TYPE),
         date=parse_column(data, ReflectionColumns.DATE),
         productivity=parse_column(data, ReflectionColumns.PRODUCTIVITY),
         hangouts=parse_column(data, ReflectionColumns.HANGOUTS),
