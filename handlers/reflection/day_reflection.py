@@ -12,9 +12,10 @@ from keyboards.inline.list_keyboard import create_list_keyboard, list_callback
 from main import dp
 from notion_scripts.form_json.equals_filter import equals_filter
 from notion_scripts.requests.add_page import add_page
+from notion_scripts.requests.read_days import read_days
 from notion_scripts.requests.read_reflections import read_reflections
 from notion_scripts.requests.read_tasks import read_tasks
-from utils.columns import ReflectionColumns, InboxColumns
+from utils.columns import ReflectionColumns, InboxColumns, DiaryColumns
 from utils.config import reflection_table_id
 from utils.properties import ReflectionProperties, weekday
 
@@ -99,16 +100,21 @@ async def process_name(message: types.Message, state: FSMContext):
     await message.answer(answer)
     await DayReportStates.waiting_for_productivity.set()
 
+    pass
+
 
 @dp.message_handler(state=DayReportStates.waiting_for_productivity)
 async def process_answer(message: types.Message, state: FSMContext):
     data = await state.get_data()
 
+    day_id = read_days(equals_filter({DiaryColumns.DATE: datetime.now().date().isoformat()}))[0].id
+
     add_page(reflection_table_id, {
         ReflectionColumns.NAME: data.get("name"),
         ReflectionColumns.TYPE: ReflectionProperties.DAY.value,
         ReflectionColumns.DATE: datetime.now().date().isoformat(),
-        ReflectionColumns.PRODUCTIVITY: message.text
+        ReflectionColumns.PRODUCTIVITY: message.text,
+        ReflectionColumns.DAY_TASKS: day_id
     })
 
     new_reflections = read_reflections(filter_data=equals_filter({

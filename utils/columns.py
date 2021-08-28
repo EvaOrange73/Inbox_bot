@@ -63,6 +63,7 @@ class DiaryColumns(Column, Enum):
     NAME = ("Name", "title")
     DATE = ("Дата", "date")
     CONTEXTS = ("Контексты", "relation")
+    REFLECTION = ("Рефлексия", "relation")
 
 
 class DateColumns(Column, Enum):
@@ -80,3 +81,4 @@ class ReflectionColumns(Column, Enum):
     IS_PROCESSED = ("Обработано", "checkbox")
     PARENT = ('Родитель', "relation")
     CHILD = ('Ребёнок', "relation")
+    DAY_TASKS = ("Задачи на день", "relation")
