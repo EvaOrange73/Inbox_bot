@@ -24,9 +24,9 @@ def parse_date(text):
     try:
         if key_words.get(text) is not None:
             return key_words.get(text)
-        elif special_dates.get(text) is not None:
+        if special_dates.get(text) is not None:
             return special_dates.get(text)
-        elif text[0].isdigit():
+        if text[0].isdigit():
             if text.find(".") != -1:
                 date = datetime.strptime(text, "%d.%m.%Y").date()
                 return UpdateDate(date, InboxColumns.DATE)

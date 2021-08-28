@@ -23,11 +23,3 @@ def create_done_and_delete_keyboard(note_id, task_type):
     )
 
 
-def undo_keyboard():  # TODO использовать где-нибудь......
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(text="назад ↩", callback_data="undo")
-            ]
-        ]
-    )

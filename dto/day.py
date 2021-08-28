@@ -1,4 +1,4 @@
 class Day:
-    def __init__(self, id, date):
+    def __init__(self, day_id, date):
         self.date = date
-        self.id = id
+        self.id = day_id

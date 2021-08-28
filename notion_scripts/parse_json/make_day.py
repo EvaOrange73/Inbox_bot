@@ -5,6 +5,6 @@ from utils.columns import DiaryColumns
 
 def make_day(data):
     return Day(
-        id=parse_column(data, DiaryColumns.ID),
+        day_id=parse_column(data, DiaryColumns.ID),
         date=parse_column(data, DiaryColumns.DATE)
     )
