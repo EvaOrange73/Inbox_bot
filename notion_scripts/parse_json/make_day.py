@@ -4,9 +4,7 @@ from utils.columns import DiaryColumns
 
 
 def make_day(data):
-    day_id = data["id"]
-    data = data["properties"]
     return Day(
-        id=day_id,
+        id=parse_column(data, DiaryColumns.ID),
         date=parse_column(data, DiaryColumns.DATE)
     )

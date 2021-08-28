@@ -10,6 +10,7 @@ class Column:
 class InboxColumns(Column, Enum):
     # общее
     NAME = ("Name", "title")
+    ID = ("id", "id")
     TYPE = ("Тип", "select")
     DONE = ("Сделано", "checkbox")
     DELETE = ("Неактуально", "checkbox")
@@ -45,6 +46,7 @@ class InboxColumns(Column, Enum):
 
 class ContextColumns(Column, Enum):
     NAME = ("Name", "title")
+    ID = ("id", "id")
     DELETE = ("Неактуально", "checkbox")
     CONDITIONS = ("Условия", "rich_text")
     RESULT = ("Результат", "rich_text")
@@ -61,6 +63,7 @@ class ContextColumns(Column, Enum):
 
 class DiaryColumns(Column, Enum):
     NAME = ("Name", "title")
+    ID = ("id", "id")
     DATE = ("Дата", "date")
     CONTEXTS = ("Контексты", "relation")
     REFLECTION = ("Рефлексия", "relation")
@@ -68,12 +71,14 @@ class DiaryColumns(Column, Enum):
 
 class DateColumns(Column, Enum):
     NAME = ("Name", "title")
+    ID = ("id", "id")
     DATE = ("Дата", "date")
     IS_EXACT = ("Точно", "checkbox")
 
 
 class ReflectionColumns(Column, Enum):
     NAME = ("Name", "title")
+    ID = ("id", "id")
     DATE = ("Дата", "date")
     TYPE = ("Тип", "select")
     PRODUCTIVITY = ("Продуктивность", "rich_text")

@@ -4,8 +4,6 @@ from utils.columns import ContextColumns
 
 
 def make_context(data, all_tasks=None):
-    context_id = data["id"]
-    data = data["properties"]
     is_planned = parse_column(data, ContextColumns.DESCRIPTION)
 
     if is_planned:
@@ -23,7 +21,7 @@ def make_context(data, all_tasks=None):
 
         return Context(
             text=parse_column(data, ContextColumns.NAME),
-            id=context_id,
+            id=parse_column(data, ContextColumns.ID),
             start=parse_column(data, ContextColumns.CONDITIONS),
             end=parse_column(data, ContextColumns.RESULT),
             all_tasks=tasks,
@@ -33,6 +31,6 @@ def make_context(data, all_tasks=None):
     else:
         return Context(
             text=parse_column(data, ContextColumns.NAME),
-            id=context_id,
+            id=parse_column(data, ContextColumns.ID),
             is_planned=False
         )

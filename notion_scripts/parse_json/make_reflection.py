@@ -4,10 +4,9 @@ from utils.columns import ReflectionColumns
 
 
 def make_reflection(data):
-    reflection_id = data["id"]
-    data = data["properties"]
+
     return Reflection(
-        id=reflection_id,
+        id=parse_column(data, ReflectionColumns.ID),
         name=parse_column(data, ReflectionColumns.NAME),
         type=parse_column(data, ReflectionColumns.TYPE),
         date=parse_column(data, ReflectionColumns.DATE),

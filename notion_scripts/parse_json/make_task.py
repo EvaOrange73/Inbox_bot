@@ -4,14 +4,12 @@ from utils.columns import InboxColumns
 
 
 def make_task(data):
-    task_id = data["id"]
-    data = data["properties"]
 
     if parse_column(data, InboxColumns.HABIT):
         task_type = "habit"
         return Task(
             text=parse_column(data, InboxColumns.NAME),
-            id=task_id,
+            id=parse_column(data, InboxColumns.ID),
             type=task_type,
             context_id=parse_column(data, InboxColumns.CONTEXT_HABITS)
         )
@@ -20,7 +18,7 @@ def make_task(data):
         list_of_children_id = parse_column(data, InboxColumns.CHILD)
         return Task(
             text=parse_column(data, InboxColumns.NAME),
-            id=task_id,
+            id=parse_column(data, InboxColumns.ID),
             type=task_type,
             children=list_of_children_id
         )
@@ -30,7 +28,7 @@ def make_task(data):
         description = parse_column(data, InboxColumns.DESCRIPTION)
         return Task(
             text=parse_column(data, InboxColumns.NAME),
-            id=task_id,
+            id=parse_column(data, InboxColumns.ID),
             type=task_type
         )
     else:
@@ -41,7 +39,7 @@ def make_task(data):
             date = parse_column(data, InboxColumns.SPECIAL_DATE)
         return Task(
             text=parse_column(data, InboxColumns.NAME),
-            id=task_id,
+            id=parse_column(data, InboxColumns.ID),
             type=task_type,
             date=date,
             context_id=parse_column(data, InboxColumns.CONTEXT_TASKS),
