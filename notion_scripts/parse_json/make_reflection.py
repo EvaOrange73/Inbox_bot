@@ -3,9 +3,11 @@ from notion_scripts.parse_json.parse_column import parse_column
 from utils.columns import ReflectionColumns
 
 
-def make_reflection(data, id):
+def make_reflection(data):
+    reflection_id = data["id"]
+    data = data["properties"]
     return Reflection(
-        id=id,
+        id=reflection_id,
         name=parse_column(data, ReflectionColumns.NAME),
         type=parse_column(data, ReflectionColumns.TYPE),
         date=parse_column(data, ReflectionColumns.DATE),

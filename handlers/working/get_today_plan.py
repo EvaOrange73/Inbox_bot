@@ -11,13 +11,14 @@ from keyboards.inline.common_buttons import create_done_and_delete_keyboard, don
 from keyboards.inline.end_keyboard import end_keyboard
 from keyboards.inline.list_keyboard import create_list_keyboard, list_callback
 from main import dp
-from notion_scripts.form_json.ecuals_filter import equals_filter
-from notion_scripts.requests.read_contexts import read_contexts
-from notion_scripts.requests.read_tasks import read_tasks
+from notion_scripts.form_json.equals_filter import equals_filter
+from notion_scripts.requests.read_table import read_table
 from notion_scripts.requests.update_page import update_page
 from utils.columns import InboxColumns
+from utils.config import inbox_table_id, context_table_id
 from utils.group_by_projects import group_by_projects
 from utils.properties import InboxProperties
+from utils.tasks import Tasks
 
 
 class TodayStates(StatesGroup):
@@ -37,15 +38,15 @@ def make_list_for_keyboard(day_context):
 
 @dp.message_handler(Command("get_today_plan"))
 async def ask_for_tomorrow_contexts(message: types.Message, state: FSMContext):
-    all_tasks = read_tasks(filter_data=equals_filter({
+    all_tasks = Tasks(read_table(inbox_table_id, filter_data=equals_filter({
         InboxColumns.DELETE: False,
         InboxColumns.DONE: False,
         InboxColumns.TYPE: InboxProperties.TASK.value,
         InboxColumns.DATE: datetime.now().date().isoformat()  # TODO подумоть.... тут тогда привычки не вернутся
-    }))
+    })))
 
     await message.answer(get_social_tasks(all_tasks.list_of_social_tasks))
-    contexts = read_contexts(all_tasks)
+    contexts = read_table(context_table_id, all_tasks=all_tasks)
 
     list_for_kb = make_list_for_keyboard(contexts)
     await message.answer("На сегодня запланированы следующие контексты:",

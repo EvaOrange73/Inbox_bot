@@ -8,14 +8,15 @@ from keyboards.default_keyboard import default_keyboard
 from keyboards.inline.yes_or_no_keyboard import create_yes_or_no_keyboard
 from main import dp
 from notion_scripts.requests.add_page import add_page
-from notion_scripts.requests.read_contexts import read_contexts
+from notion_scripts.requests.read_table import read_table
 from notion_scripts.requests.update_page import update_page
 from utils.columns import InboxColumns, ContextColumns
 from utils.config import context_table_id
 
 
 async def ask_for_context(message: types.Message, state: FSMContext):
-    list_of_contexts = read_contexts([])
+    list_of_contexts = read_table(context_table_id)
+
     await state.update_data(list_of_contexts=list_of_contexts)
     await message.answer("Каким должен быть контекст?", reply_markup=default_keyboard(
         [context.text for context in list_of_contexts]

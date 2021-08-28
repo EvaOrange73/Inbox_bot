@@ -12,14 +12,14 @@ from handlers.working.get_social_tasks import get_social_tasks
 from keyboards.default_keyboard import default_keyboard
 from keyboards.inline.list_keyboard import create_list_keyboard, list_callback
 from main import dp
-from notion_scripts.form_json.ecuals_filter import equals_filter
+from notion_scripts.form_json.equals_filter import equals_filter
 from notion_scripts.form_json.form_day_content import form_day_content
 from notion_scripts.requests.add_page import add_page
-from notion_scripts.requests.read_contexts import read_contexts
-from notion_scripts.requests.read_tasks import read_tasks
+from notion_scripts.requests.read_table import read_table
 from utils.columns import DiaryColumns, InboxColumns
-from utils.config import diary_table_id
+from utils.config import diary_table_id, inbox_table_id, context_table_id
 from utils.properties import InboxProperties, weekday
+from utils.tasks import Tasks
 
 
 class PlanStateOrder(StatesGroup):
@@ -39,14 +39,14 @@ def make_list_for_keyboard(day_context):
 
 @dp.message_handler(Command("plan_for_tomorrow"))
 async def ask_for_tomorrow_contexts(message: types.Message, state: FSMContext):
-    all_tasks = read_tasks(filter_data=equals_filter({
+    all_tasks = Tasks(read_table(inbox_table_id, filter_data=equals_filter({
         InboxColumns.DELETE: False,
         InboxColumns.DONE: False,
         InboxColumns.TYPE: InboxProperties.TASK.value
-    }))
+    })))
     await message.answer(get_social_tasks(all_tasks.list_of_social_tasks))
     await state.update_data(list_of_social_tasks=all_tasks.list_of_social_tasks)
-    contexts = read_contexts(all_tasks)
+    contexts = read_table(context_table_id, all_tasks=all_tasks)
     for context in contexts:
         if not context.is_planned:
             await message.answer("План на завтра не получился(( /new_context")

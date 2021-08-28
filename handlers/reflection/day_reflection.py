@@ -12,12 +12,11 @@ from keyboards.inline.list_keyboard import create_list_keyboard, list_callback
 from main import dp
 from notion_scripts.form_json.equals_filter import equals_filter
 from notion_scripts.requests.add_page import add_page
-from notion_scripts.requests.read_days import read_days
-from notion_scripts.requests.read_reflections import read_reflections
-from notion_scripts.requests.read_tasks import read_tasks
+from notion_scripts.requests.read_table import read_table
 from utils.columns import ReflectionColumns, InboxColumns, DiaryColumns
-from utils.config import reflection_table_id
+from utils.config import reflection_table_id, diary_table_id, inbox_table_id
 from utils.properties import ReflectionProperties, weekday
+from utils.tasks import Tasks
 
 
 class DayReportStates(StatesGroup):
@@ -28,11 +27,11 @@ class DayReportStates(StatesGroup):
 
 @dp.message_handler(Command("day_reflection"))
 async def day_report(message: types.Message, state: FSMContext):
-    all_tasks = read_tasks(filter_data=equals_filter({
+    all_tasks = Tasks(read_table(inbox_table_id, filter_data=equals_filter({
         InboxColumns.DELETE: False,
         InboxColumns.DONE: False,
         InboxColumns.DATE: datetime.now().date().isoformat()
-    }))
+    })))
     worst_context = {}
     tasks = all_tasks.list_of_tasks
     if len(tasks):
@@ -107,7 +106,7 @@ async def process_name(message: types.Message, state: FSMContext):
 async def process_answer(message: types.Message, state: FSMContext):
     data = await state.get_data()
 
-    day_id = read_days(equals_filter({DiaryColumns.DATE: datetime.now().date().isoformat()}))[0].id
+    day_id = read_table(diary_table_id, equals_filter({DiaryColumns.DATE: datetime.now().date().isoformat()}))[0].id
 
     add_page(reflection_table_id, {
         ReflectionColumns.NAME: data.get("name"),
@@ -117,7 +116,7 @@ async def process_answer(message: types.Message, state: FSMContext):
         ReflectionColumns.DAY_TASKS: day_id
     })
 
-    new_reflections = read_reflections(filter_data=equals_filter({
+    new_reflections = read_table(reflection_table_id, filter_data=equals_filter({
         ReflectionColumns.IS_PROCESSED: False,
         ReflectionColumns.TYPE: ReflectionProperties.DAY.value
     }))

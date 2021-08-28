@@ -6,9 +6,10 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from handlers.planning.new_tasks.select_category import process_single_task
 from keyboards.inline.list_keyboard import create_list_keyboard, list_callback
 from main import dp
-from notion_scripts.form_json.ecuals_filter import equals_filter
-from notion_scripts.requests.read_tasks import read_tasks
+from notion_scripts.form_json.equals_filter import equals_filter
+from notion_scripts.requests.read_table import read_table
 from utils.columns import InboxColumns
+from utils.config import inbox_table_id
 
 
 class NewTaskStates(StatesGroup):
@@ -17,11 +18,12 @@ class NewTaskStates(StatesGroup):
 
 @dp.message_handler(Command("new_tasks"), state="*")
 async def new_tasks_handler(message: types.Message, state: FSMContext):
-    list_of_tasks = read_tasks(filter_data=equals_filter({
+    list_of_tasks = read_table(inbox_table_id, filter_data=equals_filter({
         InboxColumns.DONE: False,
         InboxColumns.DELETE: False,
         InboxColumns.PLANNED: False
-    })).all_tasks
+    }))
+
     await state.update_data(list_of_tasks=list_of_tasks)
     if len(list_of_tasks) > 0:
         await message.answer("новые задачи:", reply_markup=create_list_keyboard(list_of_tasks))

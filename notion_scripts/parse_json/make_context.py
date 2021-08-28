@@ -3,7 +3,7 @@ from notion_scripts.parse_json.parse_column import parse_column
 from utils.columns import ContextColumns
 
 
-def make_context(data, all_tasks):
+def make_context(data, all_tasks=None):
     context_id = data["id"]
     data = data["properties"]
     is_planned = parse_column(data, ContextColumns.DESCRIPTION)
@@ -13,7 +13,7 @@ def make_context(data, all_tasks):
         habits = []
         ids = parse_column(data, ContextColumns.TASKS)
 
-        if all_tasks:
+        if all_tasks is not None:
             for task in all_tasks.list_of_tasks:
                 if task.id in ids:
                     tasks.append(task)

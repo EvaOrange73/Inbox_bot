@@ -8,9 +8,9 @@ from handlers.planning.context.context_states import ContextStates
 from keyboards.inline.list_keyboard import create_list_keyboard, list_callback
 from keyboards.inline.yes_or_no_keyboard import yes_or_no_callback
 from main import dp
-from notion_scripts.form_json.ecuals_filter import equals_filter
+from notion_scripts.form_json.equals_filter import equals_filter
 from notion_scripts.requests.add_page import add_page
-from notion_scripts.requests.read_contexts import read_contexts
+from notion_scripts.requests.read_table import read_table
 from notion_scripts.requests.update_page import update_page
 from utils.columns import ContextColumns
 from utils.config import context_table_id
@@ -27,12 +27,10 @@ async def process_answer(call: types.CallbackQuery, callback_data: dict, state: 
 
 @dp.message_handler(Command("new_context"))
 async def select_context(message: types.Message, state: FSMContext):
-    list_of_contexts = read_contexts([], filter_data=equals_filter(
-        {
-            ContextColumns.DELETE: False,
-            ContextColumns.DESCRIPTION: False
-        }
-    ))
+    list_of_contexts = read_table(context_table_id, filter_data=equals_filter({
+        ContextColumns.DELETE: False,
+        ContextColumns.DESCRIPTION: False
+    }))
     await state.update_data(list_of_contexts=list_of_contexts)
     list_for_kb = [Item(context.text, context.id) for context in list_of_contexts]
     list_for_kb.append(Item("добавить", "add"))
