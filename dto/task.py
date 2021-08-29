@@ -13,7 +13,7 @@ def read_line(page_id):
 
 
 class Task:
-    def __init__(self, text, task_id, task_type, who, description, date="", parent_id="", context_id="", children=""):
+    def __init__(self, text, task_id, task_type, who="", description="", date="", parent_id="", context_id="", children=""):
         self.description = description
         self.who = who
         self.type = task_type

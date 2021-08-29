@@ -21,5 +21,3 @@ def create_done_and_delete_keyboard(note_id, task_type):
                 ))]
         ]
     )
-
-

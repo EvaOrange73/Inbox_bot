@@ -47,6 +47,7 @@ async def ask_for_tomorrow_contexts(message: types.Message, state: FSMContext):
     await message.answer(get_social_tasks(all_tasks.list_of_social_tasks))
     await state.update_data(list_of_social_tasks=all_tasks.list_of_social_tasks)
     contexts = read_table(context_table_id, all_tasks=all_tasks)
+
     for context in contexts:
         if not context.is_planned:
             await message.answer("План на завтра не получился(( /new_context")

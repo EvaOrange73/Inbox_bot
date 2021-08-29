@@ -9,7 +9,9 @@ def parse_column(data, column):
         if column.column_type == "select":
             return data["name"]
         if column.column_type == "rich_text":
-            return data[0]['text']["content"]
+            if data:
+                return data[0]['text']["content"]
+            return None
         if column.column_type == "date":
             return data["start"]
         if column.column_type == "relation":

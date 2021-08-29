@@ -3,7 +3,7 @@ from notion_scripts.parse_json.parse_column import parse_column
 from utils.columns import ReflectionColumns
 
 
-def make_reflection(data):
+def make_reflection(data, arg):
     return Reflection(
         reflection_id=parse_column(data, ReflectionColumns.ID),
         name=parse_column(data, ReflectionColumns.NAME),

@@ -3,7 +3,7 @@ from notion_scripts.parse_json.parse_column import parse_column
 from utils.columns import InboxColumns
 
 
-def make_task(data):
+def make_task(data, arg):
     if parse_column(data, InboxColumns.HABIT):
         task_type = "habit"
     elif parse_column(data, InboxColumns.PROJECT):
@@ -13,7 +13,7 @@ def make_task(data):
     else:
         task_type = "task"
 
-    if data.get(InboxColumns.DATE.title) is not None:
+    if data["properties"].get(InboxColumns.DATE.title) is not None:
         date = parse_column(data, InboxColumns.DATE)
     else:
         date = parse_column(data, InboxColumns.SPECIAL_DATE)
