@@ -20,6 +20,7 @@ from utils.tasks import Tasks
 
 
 class DayReportStates(StatesGroup):
+    waiting_for_handouts_description = State()
     waiting_for_name = State()
     waiting_for_productivity = State()
     if_small_reflection = State()
@@ -27,6 +28,27 @@ class DayReportStates(StatesGroup):
 
 @dp.message_handler(Command("day_reflection"))
 async def day_report(message: types.Message, state: FSMContext):
+    day = read_table(diary_table_id, equals_filter({DiaryColumns.DATE: datetime.now().date().isoformat()}))[0]
+    await state.update_data(day=day)
+    if day.hangout_names:
+        answer = "Сегодня были тусовки!"
+        for hangout in day.hangout_names:
+            answer += f"\n{hangout}"
+        answer += "\nНапиши о том, как всё прошло!"
+        await message.answer(answer)
+        await DayReportStates.waiting_for_handouts_description.set()
+    else:
+        await print_tasks(state, message)
+
+
+@dp.message_handler(state=DayReportStates.waiting_for_handouts_description)
+async def process_hangouts_description(message: types.Message, state: FSMContext):
+    hangouts_description = message.text
+    await state.update_data(hangouts_description=hangouts_description)
+    await print_tasks(state, message)
+
+
+async def print_tasks(state: FSMContext, message: types.Message):
     all_tasks = Tasks(read_table(inbox_table_id, filter_data=equals_filter({
         InboxColumns.DELETE: False,
         InboxColumns.DONE: False,
@@ -104,14 +126,16 @@ async def process_name(message: types.Message, state: FSMContext):
 async def process_answer(message: types.Message, state: FSMContext):
     data = await state.get_data()
 
-    day_id = read_table(diary_table_id, equals_filter({DiaryColumns.DATE: datetime.now().date().isoformat()}))[0].id
+    day_id = data.get("day").id
+    hangouts = data.get("hangouts_description")
 
     add_page(reflection_table_id, {
         ReflectionColumns.NAME: data.get("name"),
         ReflectionColumns.TYPE: ReflectionProperties.DAY.value,
         ReflectionColumns.DATE: datetime.now().date().isoformat(),
         ReflectionColumns.PRODUCTIVITY: message.text,
-        ReflectionColumns.DAY_TASKS: day_id
+        ReflectionColumns.DAY_TASKS: day_id,
+        ReflectionColumns.HANGOUTS: hangouts
     })
 
     new_reflections = read_table(reflection_table_id, filter_data=equals_filter({

@@ -2,9 +2,10 @@ from enum import Enum
 
 
 class Column:
-    def __init__(self, title, column_type):
+    def __init__(self, title, column_type, column_subtype=""):
         self.title = title
         self.column_type = column_type
+        self.column_subtype = column_subtype
 
 
 class InboxColumns(Column, Enum):
@@ -66,7 +67,9 @@ class DiaryColumns(Column, Enum):
     ID = ("id", "id")
     DATE = ("Дата", "date")
     CONTEXTS = ("Контексты", "relation")
+    HANGOUTS = ("Тусы", "rollup", "checkbox")
     REFLECTION = ("Рефлексия", "relation")
+    CONTEXT_NAMES = ("имя контекста", "rollup", "title")
 
 
 class DateColumns(Column, Enum):
@@ -82,7 +85,7 @@ class ReflectionColumns(Column, Enum):
     DATE = ("Дата", "date")
     TYPE = ("Тип", "select")
     PRODUCTIVITY = ("Продуктивность", "rich_text")
-    HANGOUTS = ("Тусовки", "rich_text")
+    HANGOUTS = ("Тусы", "rich_text")
     IS_PROCESSED = ("Обработано", "checkbox")
     PARENT = ('Родитель', "relation")
     CHILD = ('Ребёнок', "relation")
