@@ -8,6 +8,10 @@ class InboxProperties(Enum):
     INFO = 'инфа'
     TODAY = 'сегодня'
     TOMORROW = "завтра"
+    HABIT = "привычка"
+    PROJECT = "проект"
+    SINGLE_TASK = "одно действие"
+    SOCIAL_TASK = "требует общения"
 
 
 class ContextProperties(Enum):

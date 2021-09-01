@@ -17,14 +17,16 @@ class InboxColumns(Column, Enum):
     DELETE = ("Неактуально", "checkbox")
     PLANNED = ("Запланировано", "checkbox")
     PARENT = ('Родитель', "relation")
+    PARENT_NAME = ("Имя родителя", "rollup", "title")
     PARENT_ARCHIVE = ("Родитель: архив", "relation")
     DATE = ("Дата", "date")
     SPECIAL_DATE = ("Примерная дата", "relation")
+
+    TASK_TYPE = ("Тип задачи", "select")
     # задачи
     CONTEXT_TASKS = ("Контекст (для задач)", "relation")
     CONTEXT_TASKS_ARCHIVE = ("Контекст (для задач): архив", "relation")
     # привычки
-    HABIT = ("Привычка", "checkbox")
     HABIT_START = ("Начало привычки", "date")
     HABIT_SPECIAL_START = ("Примерное начало", "relation")
     HABIT_END = ("Конец привычки", "date")
@@ -32,13 +34,11 @@ class InboxColumns(Column, Enum):
     CONTEXT_HABITS = ("Контекст (для привычкек)", "relation")
     CONTEXT_HABITS_ARCHIVE = ("Контекст (для привычкек): архив", "relation")
     # проекты
-    PROJECT = ("Проект", "checkbox")
     CHILD = ('Ребёнок', "relation")
     CHILD_ARCHIVE = ('Ребёнок: архив', "relation")
     CONTEXT_PROJECTS = ("Контекст (для поектов)", "relation")
     CONTEXT_PROJECTS_ARCHIVE = ("Контекст (для поектов): архив", "relation")
     # задачи, требующие общения
-    SOCIAL = ("Требует общения", "checkbox")
     DESCRIPTION = ("Описание", "rich_text")
     NEXT_STEP = ("Следующий шаг", "select")
     CONTEXT_SOCIALS = ("Контекст (требуют общения)", "relation")

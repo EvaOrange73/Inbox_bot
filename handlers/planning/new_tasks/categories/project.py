@@ -29,7 +29,7 @@ async def project(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     task_id = data.get("task_id")
     update_page(task_id, {
-        InboxColumns.PROJECT: True
+        InboxColumns.TASK_TYPE: InboxProperties.PROJECT.value
     })
 
     await call.message.answer("Добавь подзадачу")

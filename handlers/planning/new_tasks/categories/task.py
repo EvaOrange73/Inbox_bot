@@ -6,8 +6,10 @@ from handlers.planning.context.ask_for_context import ask_for_context
 from keyboards.default_keyboard import default_keyboard
 from main import dp
 from notion_scripts.requests.update_page import update_page
+from utils.columns import InboxColumns
 from utils.dates.dates import get_dates_for_keyboard
 from utils.dates.parse_date import parse_date
+from utils.properties import InboxProperties
 
 
 class TaskStates(StatesGroup):
@@ -28,7 +30,10 @@ async def process_day(message: types.Message, state: FSMContext):
     if date is not None:
         data = await state.get_data()
         task_id = data.get("task_id")
-        update_page(task_id, {date.column: date.date})
+        update_page(task_id, {
+            InboxColumns.TASK_TYPE: InboxProperties.SINGLE_TASK.value,
+            date.column: date.date
+        })
         await ask_for_context(message, state)
     else:
         await message.answer("Не получилось распознать дату, попробуй снова")

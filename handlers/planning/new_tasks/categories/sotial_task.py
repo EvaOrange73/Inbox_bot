@@ -10,6 +10,7 @@ from notion_scripts.requests.update_page import update_page
 from utils.columns import InboxColumns
 from utils.dates.dates import get_dates_for_keyboard
 from utils.dates.parse_date import parse_date
+from utils.properties import InboxProperties
 
 
 class SocialTaskStates(StatesGroup):
@@ -60,7 +61,7 @@ async def end(state: FSMContext, date=UpdateDate("", InboxColumns.DATE)):
     next_step = data.get("next_step")
     description = data.get("description")
     update_page(task_id, {
-        InboxColumns.SOCIAL: True,
+        InboxColumns.TASK_TYPE: InboxProperties.SOCIAL_TASK.value,
         InboxColumns.DESCRIPTION: description,
         InboxColumns.NEXT_STEP: next_step,
         date.column: date.date,

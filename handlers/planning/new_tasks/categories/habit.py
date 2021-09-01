@@ -9,6 +9,7 @@ from notion_scripts.requests.update_page import update_page
 from utils.columns import InboxColumns
 from utils.dates.dates import get_dates_for_keyboard
 from utils.dates.parse_date import parse_date
+from utils.properties import InboxProperties
 
 
 class HabitStates(StatesGroup):
@@ -53,7 +54,7 @@ async def process_end(message: types.Message, state: FSMContext):
 
         update_page(data.get("task_id"),
                     {
-                        InboxColumns.HABIT: True,
+                        InboxColumns.TASK_TYPE: InboxProperties.HABIT.value,
                         start_column: start.date,
                         end_column: end.date,
                         InboxColumns.PLANNED: True
