@@ -26,7 +26,8 @@ def make_context(data, all_tasks=None):
             end=parse_column(data, ContextColumns.RESULT),
             all_tasks=tasks,
             habits=habits,
-            is_planned=True
+            is_planned=True,
+            context_sum=parse_column(data, ContextColumns.SUM)
         )
 
     return Context(

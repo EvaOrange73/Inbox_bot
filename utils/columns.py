@@ -60,6 +60,7 @@ class ContextColumns(Column, Enum):
     SOCIALS_ARCHIVE = ("Требуют общения: архив", "relation")
     HABITS = ("Привычки", "relation")
     HABITS_ARCHIVE = ("Привычки: архив", "relation")
+    SUM = ("Сумма", "number")
 
 
 class DiaryColumns(Column, Enum):

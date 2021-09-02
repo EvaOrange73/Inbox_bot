@@ -1,3 +1,6 @@
+from utils.properties import InboxProperties
+
+
 class Tasks:
     def __init__(self, all_tasks):
         self.all_tasks = all_tasks
@@ -7,10 +10,10 @@ class Tasks:
         list_of_tasks = []
 
         select_list = {
-            "task": list_of_tasks,
-            "habit": list_of_habits,
-            "project": list_of_projects,
-            "social_task": list_of_social_tasks,
+            InboxProperties.SINGLE_TASK.value: list_of_tasks,
+            InboxProperties.HABIT.value: list_of_habits,
+            InboxProperties.PROJECT.value: list_of_projects,
+            InboxProperties.SOCIAL_TASK.value: list_of_social_tasks,
         }
 
         for task in all_tasks:

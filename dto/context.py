@@ -1,5 +1,8 @@
 class Context:
-    def __init__(self, text, context_id, is_planned, start="", end="", all_tasks=None, habits=None):
+    def __init__(self, text, context_id, is_planned, start="", end="", all_tasks=None, habits=None, context_sum=0):
+        if context_sum is None:
+            context_sum = 0
+        self.sum = context_sum
         self.is_planned = is_planned
         if habits is None:
             habits = []

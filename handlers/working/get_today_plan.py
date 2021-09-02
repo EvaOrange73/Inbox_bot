@@ -14,7 +14,7 @@ from main import dp
 from notion_scripts.form_json.equals_filter import equals_filter
 from notion_scripts.requests.read_table import read_table
 from notion_scripts.requests.update_page import update_page
-from utils.columns import InboxColumns
+from utils.columns import InboxColumns, ContextColumns
 from utils.config import inbox_table_id, context_table_id
 from utils.group_by_projects import group_by_projects
 from utils.properties import InboxProperties
@@ -62,6 +62,7 @@ async def process_context(call: types.CallbackQuery, callback_data: dict, state:
     contexts = data.get("contexts")
     context_id = int(callback_data.get("item_id"))
     context = contexts[context_id]
+    await state.update_data(context=context)
     await call.message.answer(context.text + ":")
 
     await call.message.answer("Привычки:")
@@ -79,18 +80,25 @@ async def process_context(call: types.CallbackQuery, callback_data: dict, state:
 
     await TodayStates.delete_and_done.set()
 
+    await state.update_data(start=datetime.now())
+
     await call.message.answer(f"работа над задачами началась в {datetime.now().hour}:{datetime.now().minute}",
                               reply_markup=end_keyboard)
 
 
 @dp.callback_query_handler(done_and_delete_buttons_callback.filter(), state=TodayStates.delete_and_done)
 async def process_buttons(call: types.CallbackQuery, callback_data: dict, state: FSMContext):
+    data = await state.get_data()
+
     if callback_data.get("button_type") == "end":
         await call.message.edit_text(
             f"{call.message.text}\nи закончилась в {datetime.now().hour}:{datetime.now().minute}")
+        start = data.get("start")
+        minutes = (datetime.now() - start).total_seconds() // 60
+        context = data.get("context")
+        update_page(context.id, {ContextColumns.SUM: context.sum + minutes})
         await state.finish()
     else:
-        data = await state.get_data()
         task_id = callback_data.get("task_id")
         if callback_data.get("button_type") == "done":
             if callback_data.get("task_type") == "task":
