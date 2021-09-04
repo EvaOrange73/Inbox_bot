@@ -53,6 +53,8 @@ def form_json(data: Dict[Column, str], parent=None, children=None):
             new_json["children"] = children
         elif isinstance(children, str):
             new_json["children"] = [paragraph(children)]
+        else:
+            new_json["children"] = [children]
 
     # print(new_json)
     return json.dumps(new_json)

@@ -81,3 +81,18 @@ def bulleted_list_item(text):
             ]
         }
     }
+
+
+def toggle(text, children: list):
+    return {
+        "type": "toggle",
+        "toggle": {
+            "text": [{
+                "type": "text",
+                "text": {
+                    "content": text
+                }
+            }],
+            "children": children
+        }
+    }

@@ -4,12 +4,16 @@ from utils.columns import InboxColumns
 
 
 def make_task(data, arg):
-
-
     if data["properties"].get(InboxColumns.DATE.title) is not None:
         date = parse_column(data, InboxColumns.DATE)
     else:
         date = parse_column(data, InboxColumns.SPECIAL_DATE)
+
+    parent_name = parse_column(data, InboxColumns.PARENT_NAME)
+    if parent_name:
+        parent_name = parent_name[0]
+    else:
+        parent_name = ""
 
     return Task(
         text=parse_column(data, InboxColumns.NAME),
@@ -21,5 +25,5 @@ def make_task(data, arg):
         date=date,
         context_id=parse_column(data, InboxColumns.CONTEXT_TASKS),
         parent_id=parse_column(data, InboxColumns.PARENT),
-        parent_name=parse_column(data, InboxColumns.PARENT_NAME)
+        parent_name=parent_name
     )

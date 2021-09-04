@@ -49,6 +49,7 @@ class ContextColumns(Column, Enum):
     NAME = ("Name", "title")
     ID = ("id", "id")
     DELETE = ("Неактуально", "checkbox")
+    HANGOUT = ("Туса", "checkbox")
     CONDITIONS = ("Условия", "rich_text")
     RESULT = ("Результат", "rich_text")
     DESCRIPTION = ("Описание", "checkbox")

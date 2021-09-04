@@ -9,11 +9,11 @@ def form_day_content(list_of_context, list_of_social_tasks):
         children.append(h2(context.text))
         children.append(h3("Условия:"))
         children.append(paragraph(context.start))
-        if len(context.habits):
+        if context.habits:
             children.append(h3("Привычки:"))
             for habit in context.habits:
                 children.append(bulleted_list_item(habit.text))
-        if len(context.all_tasks):
+        if context.all_tasks:
             children.append(h3("Задачи:"))
             for project in group_by_projects(context.all_tasks):
                 if project.name != "":
