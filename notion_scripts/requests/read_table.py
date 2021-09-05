@@ -1,10 +1,11 @@
 import requests
 
+from notion_scripts.parse_json.make_date import make_date
 from notion_scripts.parse_json.make_context import make_context
 from notion_scripts.parse_json.make_day import make_day
 from notion_scripts.parse_json.make_reflection import make_reflection
 from notion_scripts.parse_json.make_task import make_task
-from utils.config import headers, context_table_id, inbox_table_id, reflection_table_id, diary_table_id
+from utils.config import headers, context_table_id, inbox_table_id, reflection_table_id, diary_table_id, date_table_id
 
 
 def read_table(table_id, filter_data="", all_tasks=None, list_of_ids=False):
@@ -18,8 +19,8 @@ def read_table(table_id, filter_data="", all_tasks=None, list_of_ids=False):
         context_table_id: make_context,
         inbox_table_id: make_task,
         reflection_table_id: make_reflection,
-        diary_table_id: make_day
-
+        diary_table_id: make_day,
+        date_table_id: make_date
     }
 
     lines = []
