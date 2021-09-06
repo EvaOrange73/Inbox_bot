@@ -16,3 +16,4 @@ def update_page(line_id, data: Dict[Column, Any], children=None):
     data = res.json()
     if data.get("status") == 400:
         print(res.text)
+    return True

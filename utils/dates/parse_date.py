@@ -25,7 +25,7 @@ def parse_date(text):
         if text[0].isdigit():
             if text.find(".") != -1:
                 date = datetime.strptime(text, "%d.%m.%Y").date()
-                return UpdateDate(text, date, InboxColumns.DATE)
+                return UpdateDate(name=text, date=date, column=InboxColumns.DATE)
 
             date_list = list(text.split(" "))
             day = int(date_list[0])
@@ -39,7 +39,7 @@ def parse_date(text):
                 if datetime.now().month > month:
                     year += 1
 
-            return UpdateDate(text, datetime(year, month, day).date().isoformat(), InboxColumns.DATE)
+            return UpdateDate(name=text, date=datetime(year, month, day).date().isoformat(), column=InboxColumns.DATE)
 
         weekday = list(text.split(" "))[-1]
         try:
@@ -51,6 +51,6 @@ def parse_date(text):
         while date.weekday() != weekday:
             date += timedelta(days=1)
 
-        return UpdateDate(text, date.isoformat(), InboxColumns.DATE)
+        return UpdateDate(name=text, date=date.isoformat(), column=InboxColumns.DATE)
     except ValueError:
         return None

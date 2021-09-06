@@ -6,9 +6,9 @@ from notion_scripts.requests.read_table import read_table
 from utils.columns import InboxColumns
 from utils.config import date_table_id
 
-key_words = [UpdateDate("сегодня", datetime.now().date().isoformat(), InboxColumns.DATE),
-             UpdateDate("завтра", (datetime.now().date() + timedelta(days=1)).isoformat(), InboxColumns.DATE),
-             UpdateDate("послезавтра", (datetime.now().date() + timedelta(days=2)).isoformat(), InboxColumns.DATE)
+key_words = [UpdateDate(name="сегодня", date=datetime.now().date().isoformat(), column=InboxColumns.DATE),
+             UpdateDate(name="завтра", date=(datetime.now().date() + timedelta(days=1)).isoformat(), column=InboxColumns.DATE),
+             UpdateDate(name="послезавтра", date=(datetime.now().date() + timedelta(days=2)).isoformat(), column=InboxColumns.DATE)
              ]
 
 

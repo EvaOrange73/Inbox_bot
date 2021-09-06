@@ -5,6 +5,7 @@ from utils.columns import DateColumns, InboxColumns
 
 def make_date(data, arg):
     return UpdateDate(name=parse_column(data, DateColumns.NAME),
-                      date=data["id"],
+                      date=parse_column(data, DateColumns.DATE),
+                      date_id=data["id"],
                       column=InboxColumns.SPECIAL_DATE
                       )

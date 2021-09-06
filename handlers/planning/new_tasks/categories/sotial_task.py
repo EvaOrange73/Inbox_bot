@@ -55,7 +55,7 @@ async def add_time_to_social_task(message: Message, state: FSMContext):
         await message.answer("Не получилось распознать дату, попробуй снова")
 
 
-async def end(state: FSMContext, date=UpdateDate("", InboxColumns.DATE)):
+async def end(state: FSMContext, date=UpdateDate(column=InboxColumns.DATE, date="")):
     data = await state.get_data()
     task_id = data.get("task_id")
     next_step = data.get("next_step")
