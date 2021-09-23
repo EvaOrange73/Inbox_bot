@@ -11,4 +11,3 @@ class ColumnTypes(Enum):
     DATE = "date"
     RICH_TEXT = "rich_text"
     NUMBER = "number"
-

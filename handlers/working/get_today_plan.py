@@ -120,7 +120,9 @@ async def process_buttons(call: types.CallbackQuery, callback_data: dict, state:
                     InboxColumns.CONTEXT_TASKS: [],
                     InboxColumns.CONTEXT_TASKS_ARCHIVE: context_id
                 })
-            elif callback_data.get("task_type") == "habit":  # TODO подумать над трекером привычек
+            elif callback_data.get(
+                    "task_type") == "habit":  # TODO подумать над трекером привычек:
+                # добавлять на страницу привычки дату, когда она была сделана
                 update_page(task_id, {
                     InboxColumns.DONE: True
                 })

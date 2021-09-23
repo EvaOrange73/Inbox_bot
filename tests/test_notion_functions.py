@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import pytest
 
 from notion_scripts.form_json.equals_filter import equals_filter
+from notion_scripts.form_json.utils import h1, h2, h3, paragraph, bulleted_list_item, bold_paragraph, toggle
 from notion_scripts.requests.add_page import add_page
 from notion_scripts.requests.read_table import read_table
 from notion_scripts.requests.update_page import update_page
@@ -75,3 +76,14 @@ def test_update_page(table_id, columns):
 
     for page in list_of_pages:
         assert update_page(page.id, data, "test page content2")
+
+
+@pytest.mark.parametrize("function", [h1, h2, h3, paragraph, bulleted_list_item, bold_paragraph])
+def test_add_page_content(function):
+    page = read_table(inbox_table_id, filter_data=equals_filter({InboxColumns.NAME: "test page2"}))[0]
+    assert update_page(page.id, data={InboxColumns.DELETE: False}, children=[function("test text")])
+
+
+def test_toggle():
+    page = read_table(inbox_table_id, filter_data=equals_filter({InboxColumns.NAME: "test page2"}))[0]
+    assert update_page(page.id, data={}, children=[toggle("test text", [paragraph("test text")])])

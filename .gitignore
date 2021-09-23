@@ -1,0 +1,6 @@
+.pytest_cache
+.idea
+venv
+test.json
+test.py
+utils/config.py
